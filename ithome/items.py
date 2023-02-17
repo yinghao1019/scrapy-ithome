@@ -41,6 +41,7 @@ class IthomeThemeItem(scrapy.Item):
     url = scrapy.Field()
     group_id = scrapy.Field()
     author = scrapy.Field()
+    serial_annual=scrapy.Field()
     publish_timestamp = scrapy.Field()
     created_timestamp = scrapy.Field()
     updated_timestamp = scrapy.Field()
