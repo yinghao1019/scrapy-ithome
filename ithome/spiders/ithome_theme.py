@@ -1,11 +1,9 @@
-from typing import Iterable, Tuple
+from typing import Iterable
 
-import pymongo
 import scrapy
 from scrapy import Item, selector
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Response
-from scrapy.utils.project import get_project_settings
 
 from ithome.items import IthomeGroupItem, IthomeThemeItem
 from ithome.utils.date_utils import extract_datetime, to_datetime, get_year
@@ -15,10 +13,11 @@ class IthomeThemeSpider(scrapy.Spider):
     name = 'ithome_theme'
     allowed_domains = ['ithome.com.tw']
 
-    def __init__(self, start_url: str, start_page: str, crawl_pages:str, *args, **kwargs):
+    def __init__(self, start_url: str, start_page: str, theme_annual: str, crawl_page=None, *args, **kwargs):
         super(IthomeThemeSpider, self).__init__(*args, **kwargs)
         self.start_url = start_url
-        self.end_page = int(start_page) + int(crawl_pages)
+        self.theme_annual = int(theme_annual)
+        self.end_page = int(start_page) + int(crawl_page)
         self.start_page = int(start_page)
 
     def start_requests(self) -> Iterable:
@@ -59,6 +58,6 @@ class IthomeThemeSpider(scrapy.Spider):
         theme_item['group_id'] = group_id
         theme_item['author'] = theme.css('div.contestants-list__name::text').get()
         theme_item['publish_timestamp'] = publish_timestamp
-        theme_item['serial_annual'] = get_year(publish_timestamp)
+        theme_item['serial_annual'] = self.theme_annual
 
         yield theme_item
