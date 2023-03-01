@@ -76,9 +76,9 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     'ithome.pipelines.CleanStringPipeline': 200,
     'ithome.pipelines.DropNullPipeline': 250,
-    'ithome.pipelines.IthomeThemeGroupMongoPipeline': 350,
-    'ithome.pipelines.IthomeThemeMongoPipeline': 400,
-    'ithome.pipelines.IthomeArticleMongoPipeline': 450,
+    'ithome.pipelines.IthomeGroupMongoPipeline': 350,
+    'ithome.pipelines.IronmanThemeMongoPipeline': 400,
+    'ithome.pipelines.IronmanArticleMongoPipeline': 450,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

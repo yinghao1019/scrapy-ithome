@@ -12,7 +12,7 @@ class IthomeItem(scrapy.Item):
     pass
 
 
-class IthomeArticleItem(scrapy.Item):
+class IronmanArticleItem(scrapy.Item):
     _id = scrapy.Field()
     title = scrapy.Field()
     description = scrapy.Field()
@@ -34,7 +34,7 @@ class IthomeGroupItem(scrapy.Item):
     updated_timestamp = scrapy.Field()
 
 
-class IthomeThemeItem(scrapy.Item):
+class IronmanThemeItem(scrapy.Item):
     _id = scrapy.Field()
     title = scrapy.Field()
     description = scrapy.Field()

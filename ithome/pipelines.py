@@ -55,12 +55,12 @@ class AbstractMongoPipeline:
         self.client.close()
 
 
-class IthomeThemeMongoPipeline(AbstractMongoPipeline):
+class IronmanThemeMongoPipeline(AbstractMongoPipeline):
     collection_name = 'theme'
 
     def process_item(self, item, spider):
         now = datetime.now(timezone.utc)
-        if isinstance(item, items.IthomeThemeItem):
+        if isinstance(item, items.IronmanThemeItem):
             document = self.collection.find_one({'url': item['url']})
             group_id = item.pop('group_id')
             data = dict(item)
@@ -90,7 +90,7 @@ class IthomeThemeMongoPipeline(AbstractMongoPipeline):
             self.db['category'].update_one({'_id': document['_id']}, {'$set': {"themes": themes}})
 
 
-class IthomeThemeGroupMongoPipeline(AbstractMongoPipeline):
+class IthomeGroupMongoPipeline(AbstractMongoPipeline):
     collection_name = 'category'
 
     def process_item(self, item, spider):
@@ -116,12 +116,12 @@ class IthomeThemeGroupMongoPipeline(AbstractMongoPipeline):
         return item
 
 
-class IthomeArticleMongoPipeline(AbstractMongoPipeline):
+class IronmanArticleMongoPipeline(AbstractMongoPipeline):
     collection_name = 'article'
 
     def process_item(self, item, spider):
         now = datetime.now(timezone.utc)
-        if isinstance(item, items.IthomeArticleItem):
+        if isinstance(item, items.IronmanArticleItem):
             document = self.collection.find_one({'url': item['url']})
             theme_id = item.pop('theme_id')
             data = dict(item)

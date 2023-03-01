@@ -5,16 +5,16 @@ from scrapy import Item, selector
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Response
 
-from ithome.items import IthomeGroupItem, IthomeThemeItem
-from ithome.utils.date_utils import extract_datetime, to_datetime, get_year
+from ithome.items import IthomeGroupItem, IronmanThemeItem
+from ithome.utils.date_utils import extract_datetime, to_datetime
 
 
-class IthomeThemeSpider(scrapy.Spider):
-    name = 'ithome_theme'
+class IronmanThemeSpider(scrapy.Spider):
+    name = 'ironman_theme'
     allowed_domains = ['ithome.com.tw']
 
     def __init__(self, start_url: str, start_page: str, theme_annual: str, crawl_page=None, *args, **kwargs):
-        super(IthomeThemeSpider, self).__init__(*args, **kwargs)
+        super(IronmanThemeSpider, self).__init__(*args, **kwargs)
         self.start_url = start_url
         self.theme_annual = int(theme_annual)
         self.end_page = int(start_page) + int(crawl_page)
@@ -51,7 +51,7 @@ class IthomeThemeSpider(scrapy.Spider):
         publish_timestamp = to_datetime(publish_timestamp)
 
         title = theme.css('a.contestants-list__title')
-        theme_item = IthomeThemeItem()
+        theme_item = IronmanThemeItem()
         theme_item['title'] = title.css('::text').get()
         theme_item['url'] = title.css('::attr(href)').get()
         theme_item['description'] = theme.css('p.contestants-list__desc::text').get()

@@ -1,37 +1,33 @@
-from abc import ABC
-from typing import Iterable
+import json
 
-import pymongo
+from typing import Iterable
 import scrapy
 from scrapy.http import Response
 
-from ithome.items import IthomeArticleItem
+from ithome.items import IronmanArticleItem
 from ithome.utils.date_utils import to_datetime
 from ithome.utils.string_utils import parse_int
 
 
-class IthomeArticleSpider(scrapy.Spider, ABC):
-    name = 'ithome_article'
+class IronmanArticleSpider(scrapy.Spider):
+    name = 'ironman_article'
     allowed_domains = ['ithome.com.tw']
 
-    def __init__(self, mongo_uri=None, mongo_db=None, *args, **kwargs):
-        super(IthomeArticleSpider, self).__init__(*args, **kwargs)
-        self.client = pymongo.MongoClient(mongo_uri)
-        self.db = self.client[mongo_db]
+    def __init__(self,ironman_themes: str, *args, **kwargs):
+        super(IronmanArticleSpider, self).__init__(*args, **kwargs)
+        self.ironman_themes = json.loads(ironman_themes)
 
     def start_requests(self) -> Iterable:
-        theme_documents = self.db['theme'].find({"articles": {"$exists": False}}).limit(3)
-        for doc in theme_documents:
-            if 'url' in doc:
-                yield scrapy.Request(doc['url'], callback=self.parse_page, cb_kwargs=dict(theme_id=doc['_id']))
-        self.client.close()
-
+        for theme in self.ironman_themes:
+            if 'url' in theme:
+                yield scrapy.Request(theme['theme_url'], callback=self.parse_page,
+                                     cb_kwargs=dict(theme_id=theme['theme_id']))
     def parse_page(self, response: Response, theme_id: int) -> Iterable:
         next_page = response.css("ul.pagination:last-child>a[href]")
         articles = response.css("div.ir-profile-content").css("div.qa-list")
         # 提取當前頁面的文章清單
         for article in articles:
-            article_item = IthomeArticleItem()
+            article_item = IronmanArticleItem()
             info = article.css("div.profile-list__condition")
             like = info.css("div a.qa-condition:first-child > span.qa-condition__count::text").get()
             views = info.css("div a.qa-condition:last-child > span.qa-condition__count::text").get()
