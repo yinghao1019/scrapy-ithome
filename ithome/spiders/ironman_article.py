@@ -1,7 +1,7 @@
-import json
-
 from typing import Iterable
+
 import scrapy
+from bson import json_util
 from scrapy.http import Response
 
 from ithome.items import IronmanArticleItem
@@ -13,15 +13,16 @@ class IronmanArticleSpider(scrapy.Spider):
     name = 'ironman_article'
     allowed_domains = ['ithome.com.tw']
 
-    def __init__(self,ironman_themes: str, *args, **kwargs):
+    def __init__(self, ironman_themes: str, *args, **kwargs):
         super(IronmanArticleSpider, self).__init__(*args, **kwargs)
-        self.ironman_themes = json.loads(ironman_themes)
+        self.ironman_themes = json_util.loads(ironman_themes)
 
     def start_requests(self) -> Iterable:
         for theme in self.ironman_themes:
             if 'url' in theme:
                 yield scrapy.Request(theme['theme_url'], callback=self.parse_page,
                                      cb_kwargs=dict(theme_id=theme['theme_id']))
+
     def parse_page(self, response: Response, theme_id: int) -> Iterable:
         next_page = response.css("ul.pagination:last-child>a[href]")
         articles = response.css("div.ir-profile-content").css("div.qa-list")
