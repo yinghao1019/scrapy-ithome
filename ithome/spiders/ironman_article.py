@@ -19,14 +19,13 @@ class IronmanArticleSpider(scrapy.Spider):
 
     def start_requests(self) -> Iterable:
         for theme in self.ironman_themes:
-            if 'url' in theme:
+            if 'theme_url' in theme:
                 yield scrapy.Request(theme['theme_url'], callback=self.parse_page,
                                      cb_kwargs=dict(theme_id=theme['theme_id']))
 
     def parse_page(self, response: Response, theme_id: int) -> Iterable:
-        next_page = response.css("ul.pagination:last-child>a[href]")
-        articles = response.css("div.ir-profile-content").css("div.qa-list")
         # 提取當前頁面的文章清單
+        articles = response.css("div.ir-profile-content").css("div.qa-list")
         for article in articles:
             article_item = IronmanArticleItem()
             info = article.css("div.profile-list__condition")
@@ -48,7 +47,9 @@ class IronmanArticleSpider(scrapy.Spider):
             article_item['publish_timestamp'] = to_datetime(publish_timestamp)
 
             yield article_item
-        # 爬取下一頁的主題文章清單
-        if next_page:
-            next_page_url = next_page.css("a[rel='next']::attr(href)").get()
+
+        # 爬取下一頁的文章
+        next_page_href = response.css("ul.pagination > li:last-child a[href]")
+        if next_page_href:
+            next_page_url = next_page_href.attrib['href']
             yield scrapy.Request(next_page_url, callback=self.parse_page, cb_kwargs=dict(theme_id=theme_id))
