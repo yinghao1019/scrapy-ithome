@@ -12,17 +12,6 @@ BOT_NAME = 'ithome'
 SPIDER_MODULES = ['ithome.spiders']
 NEWSPIDER_MODULE = 'ithome.spiders'
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-FAKEUSERAGENT_PROVIDERS = [
-    # this is the first provider we'll try
-    'scrapy_fake_useragent.providers.FakeUserAgentProvider',
-    # if FakeUserAgentProvider fails, we'll use faker to generate a user-agent string for us
-    'scrapy_fake_useragent.providers.FakerProvider',
-    # fall back to USER_AGENT value
-    'scrapy_fake_useragent.providers.FixedUserAgentProvider',
-]
-# your user agent string which you will fall back to if all other providers fail
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
@@ -58,10 +47,9 @@ DOWNLOAD_DELAY = 5
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
-    'scrapy_fake_useragent.middleware.RetryUserAgentMiddleware': 401,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'ithome.middlewares.RandomUserAgentMiddleware': 400,
     'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
 }
 

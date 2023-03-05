@@ -5,12 +5,12 @@ name = "pypi"
 
 [packages]
 scrapy = "*"
-scrapy-fake-useragent = "*"
 pylint = "*"
 pymongo = "*"
 scrapeops-scrapy-proxy-sdk = "*"
 pycryptodome = "*"
 scrapyd-client = "*"
+fake-useragent = "*"
 
 [dev-packages]
 autopep8 = "*"
