@@ -95,9 +95,9 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = '2.7'
 TWISTED_REACTOR = 'twisted.internet.asyncioreactor.AsyncioSelectorReactor'
 
 # DB settings
-MONGO_HOST = 'cluster0.vg92rrr.mongodb.net'
-MONGO_DATABASE = 'ithome-dev'
-MONGO_USERNAME = 'developer'
+MONGO_HOST = ''
+MONGO_DATABASE = ''
+MONGO_USERNAME = ''
 MONGO_PASSWORD = ''
 # Proxy settings
 SCRAPEOPS_API_KEY = ''

@@ -5,13 +5,12 @@ import os
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
+key = os.environ.get('ENCRYPT_KEY').encode()
+iv = os.environ.get('ENCRYPT_IV').encode()
 
-iv = b'3hQbBrEGDnDK8uSa'
 
 def encrypt(data: str) -> str:
     # Encrypt the password
-    key = os.environ.get('ENCRYPT_KEY').encode()
-
     cipher = AES.new(key, AES.MODE_CBC, iv)
     ciphertext = cipher.encrypt(pad(data.encode(), AES.block_size))
     # Encode the ciphertext as base64
@@ -19,8 +18,6 @@ def encrypt(data: str) -> str:
 
 
 def decrypt(ciphertext: str) -> str:
-    key = os.environ.get('ENCRYPT_KEY').encode()
-
     ciphertext = base64.b64decode(ciphertext.encode())
     cipher = AES.new(key, AES.MODE_CBC, iv)
     ciphertext = unpad(cipher.decrypt(ciphertext), AES.block_size)
