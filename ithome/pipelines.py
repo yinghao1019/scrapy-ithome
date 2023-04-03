@@ -30,7 +30,7 @@ class DropNullPipeline:
         if 'url' in item:
             if item.get('url') == None:
                 raise DropItem("item's url is null")
-        return item;
+        return item
 
 
 class AbstractMongoPipeline:
@@ -114,7 +114,6 @@ class IthomeGroupMongoPipeline(AbstractMongoPipeline):
                 item['_id'] = document['_id']
 
         return item
-
 
 class IronmanArticleMongoPipeline(AbstractMongoPipeline):
     collection_name = 'article'
