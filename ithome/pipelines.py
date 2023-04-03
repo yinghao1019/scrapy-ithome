@@ -28,7 +28,7 @@ class CleanStringPipeline:
 class DropNullPipeline:
     def process_item(self, item, spider):
         if 'url' in item:
-            if item.get('url') == None:
+            if item.get('url') is None:
                 raise DropItem("item's url is null")
         return item
 
