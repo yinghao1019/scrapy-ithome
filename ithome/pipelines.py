@@ -37,7 +37,7 @@ class AbstractMongoPipeline:
     collection_name = None
 
     def __init__(self, host, mongo_db, username, password):
-        self.mongo_uri = f'mongodb+srv://{username}:{decrypt(password)}@{host}/?retryWrites=true&w=majority'
+        self.mongo_uri = f'mongodb://{username}:{decrypt(password)}@{host}/?retryWrites=true&ssl=true'
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[mongo_db]
         self.collection = self.db[self.collection_name]
