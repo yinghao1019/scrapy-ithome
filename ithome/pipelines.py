@@ -38,7 +38,7 @@ class AbstractMongoPipeline:
 
     def __init__(self, host, mongo_db, username, password):
         self.mongo_uri = f'mongodb://{username}:{decrypt(password)}@{host}:10255/?retryWrites=true&ssl=true'
-        self.client = pymongo.MongoClient(self.mongo_uri)
+        self.client = pymongo.MongoClient(self.mongo_uri, port=10255)
         self.db = self.client[mongo_db]
         self.collection = self.db[self.collection_name]
 
@@ -114,6 +114,7 @@ class IthomeGroupMongoPipeline(AbstractMongoPipeline):
                 item['_id'] = document['_id']
 
         return item
+
 
 class IronmanArticleMongoPipeline(AbstractMongoPipeline):
     collection_name = 'article'
